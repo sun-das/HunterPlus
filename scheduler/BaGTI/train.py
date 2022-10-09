@@ -49,7 +49,7 @@ def accuracy(dataset, model):
 	return total/len(dataset)
 
 def save_model(model, optimizer, epoch, accuracy_list):
-	file_path = MODEL_SAVE_PATH + "/" + model.name + "_" + str(epoch) + ".ckpt"
+	file_path = MODEL_SAVE_PATH + "/" + model.name + "_Trained.ckpt"
 	torch.save({
         'epoch': epoch,
         'model_state_dict': model.state_dict(),
@@ -78,10 +78,26 @@ if __name__ == '__main__':
 	# 'stochastic_energy_latency', 'stochastic_energy_latency2' + '_' + str(HOSTS)
 	exec_type = argv[2] # can be 'train', ga', 'opt'
 
+	#INITIALIZE THE AI MODEL
+	#FOR GNN THIS MEANS THAT A GNN MODEL IS LOADED.
+	#DIFFERENT HOST NUMBERS REQUIRE DIFFERENT MODELS
 	model = eval(data_type+"()")
+
+	#MODEL IS LOADED. 
+	#LOAD_MODEL FUNCTION IS DEFINED IN TRAIN.PY
+	#OPTIMIZER IS CREATED IN LOAD_MODEL FUNCTION
+
+	# LOAD_MODEL CAN CARRY ON WITH A BRAND NEW MODEL
+	# LOAD_MODEL CAN LOAD AN EXISTING CHECKPOINT OF A PRETRAINED MODEL
 	model, optimizer, start_epoch, accuracy_list = load_model(data_type, model, data_type)
 	dtl = data_type.split('_')
-	dataset, dataset_size, _ = eval("load_"+'_'.join(dtl[:-1])+"_data("+dtl[-1]+")")
+	#dtl.pop(2)
+	#dataset, dataset_size, _ = eval("load_"+'_'.join(dtl[:-1])+"_data("+dtl[-1]+")")
+	print("Load function:")
+	print("load_"+'_'.join(dtl[:-2])+"_data("+dtl[-1]+")")
+	dataset, dataset_size, _ = eval("load_"+'_'.join(dtl[:-2])+"_data("+dtl[-1]+")")
+	#dataset, dataset_size, _ = eval("load_"+'_'.join(dtl[:-1])+"_data("+dtl[-1]+")")
+
 
 	if exec_type == "train":
 		split = int(0.8 * dataset_size)
