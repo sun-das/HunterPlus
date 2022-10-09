@@ -1,4 +1,4 @@
-# HUNTER
+# HUNTERPlus
 
 
 ## Quick Start Guide
