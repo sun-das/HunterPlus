@@ -15,6 +15,8 @@ To run the simulator, use the following command
 ```bash
 python3 main.py
 ```
+## Description
+
 ```
 The GGCN, BiGGCN, and CNN Models are all located in \scheduler\BaGTI\src\models.py
 They are known as GRU128, BiGRU128, and CNN
