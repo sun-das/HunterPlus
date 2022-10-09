@@ -46,6 +46,23 @@ class GatedRGCNLayer(nn.Module):
             feat = self.gru(G.ndata['h'], feat)
         return self.activation(feat)
 
+class BackwardGatedRGCNLayer(nn.Module):
+    def __init__(self, in_size, out_size, activation):
+        super(BackwardGatedRGCNLayer, self).__init__()
+        self.weight = nn.Linear(in_size, out_size)
+        self.reduce = nn.Linear(in_size, out_size)
+        self.activation = activation
+        self.gru = LayerNormGRUCell(out_size, out_size, bias = True)
+
+    def forward(self, G, features):
+        funcs = {}; feat = self.activation(self.reduce(features))
+        for _ in range(N_TIMESEPS):
+            Wh = self.weight(features)
+            G.ndata['Wh_b'] = Wh
+            G.update_all(fn.copy_u('Wh_b', 'm'), fn.mean('m', 'h'))
+            feat = self.gru(torch.flip(G.ndata['h'], [0]), feat)
+        return self.activation(feat)
+
 class GatedHeteroRGCNLayer(nn.Module):
     # The Gated GCN layer which has been borrowed from DGL. Contains a link to the source module.
     # Source = https://docs.dgl.ai/_modules/dgl/nn/pytorch/conv/gatedgraphconv.html#GatedGraphConv
@@ -99,6 +116,10 @@ class LayerNormGRUCell(RNNCellBase):
             weight.data.uniform_(-stdv, stdv)
 
     def forward(self, input, hx):
+        #print("Input:")
+        #print(input)
+        #print("Hidden")
+        #print(hx)
         self.check_forward_input(input)
         self.check_forward_hidden(input, hx)
         return self._LayerNormGRUCell(
