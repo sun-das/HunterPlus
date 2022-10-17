@@ -17,13 +17,15 @@ from framework.database.Database import *
 from framework.datacenter.Datacenter_Setup import *
 from framework.datacenter.Datacenter import *
 from framework.workload.DeFogWorkload import *
+from framework.workload.AIoTBenchWorkload import *
 
 # Simulator imports
 from simulator.Simulator import *
 from simulator.environment.AzureFog import *
 from simulator.environment.BitbrainFog import *
-from simulator.workload.BitbrainWorkload_GaussianDistribution import *
 from simulator.workload.BitbrainWorkload2 import *
+from simulator.workload.Azure2017Workload import *
+from simulator.workload.Azure2019Workload import *
 
 # Scheduler imports
 from scheduler.IQR_MMT_Random import IQRMMTRScheduler
@@ -37,6 +39,7 @@ from scheduler.Threshold_MC_Random import TMCRScheduler
 from scheduler.Random_Random_Random import RandomScheduler
 from scheduler.HGP_LBFGS import HGPScheduler
 from scheduler.GA import GAScheduler
+from scheduler.GGCN import GGCNScheduler
 from scheduler.GOBI import GOBIScheduler
 from scheduler.GOBI2 import GOBI2Scheduler
 from scheduler.DRL import DRLScheduler
@@ -48,8 +51,7 @@ from scheduler.HGOBI import HGOBIScheduler
 from scheduler.HGOBI2 import HGOBI2Scheduler
 from scheduler.HSOGOBI import HSOGOBIScheduler
 from scheduler.HSOGOBI2 import HSOGOBI2Scheduler
-from scheduler.GGCN import GGCNScheduler
-from scheduler.CRUZE import CRUZEScheduler
+from scheduler.CNN_Normalised import CNNScheduler
 
 # Auxiliary imports
 from stats.Stats import *
@@ -66,13 +68,13 @@ parser.add_option("-m", "--mode", action="store", dest="mode", default="0",
 opts, args = parser.parse_args()
 
 # Global constants
-NUM_SIM_STEPS = 100
-HOSTS = 10 * 5 if opts.env == '' else 10
-CONTAINERS = HOSTS
+NUM_SIM_STEPS = 20
+HOSTS = 4 if opts.env == '' else 4
+CONTAINERS =5*HOSTS
 TOTAL_POWER = 1000
 ROUTER_BW = 10000
 INTERVAL_TIME = 300 # seconds
-NEW_CONTAINERS = 0 if HOSTS == 10 else 5
+NEW_CONTAINERS = 2 # if HOSTS == 10 else 5
 DB_NAME = ''
 DB_HOST = ''
 DB_PORT = 0
@@ -95,15 +97,17 @@ def initalizeEnvironment(environment, logger):
 		datacenter = AzureFog(HOSTS)
 
 	# Initialize workload
-	''' Can be SWSD, BWGD, BWGD2 // DFW '''
+	''' Can be SWSD, BWGD2, Azure2017Workload, Azure2019Workload // DFW, AIoTW '''
 	if environment != '':
 		workload = DFW(NEW_CONTAINERS, 1.5, db)
-	else: 
+	else:  
 		workload = BWGD2(NEW_CONTAINERS, 1.5)
 	
 	# Initialize scheduler
 	''' Can be LRMMTR, RF, RL, RM, Random, RLRMMTR, TMCR, TMMR, TMMTR, GA, GOBI (arg = 'energy_latency_'+str(HOSTS)) '''
-	scheduler = GGCNScheduler('energy_latency_'+str(HOSTS)) # GOBIScheduler('energy_latency_'+str(HOSTS))
+	scheduler = GGCNScheduler('energy_latency_GRU128L3_'+str(HOSTS)) # GOBIScheduler('energy_latency_'+str(HOSTS))
+	#scheduler = CNNScheduler('energy_latency_4')
+	#scheduler = RandomScheduler()
 
 	# Initialize Environment
 	hostlist = datacenter.generateHosts()
@@ -111,6 +115,9 @@ def initalizeEnvironment(environment, logger):
 		env = Framework(scheduler, CONTAINERS, INTERVAL_TIME, hostlist, db, environment, logger)
 	else:
 		env = Simulator(TOTAL_POWER, ROUTER_BW, scheduler, CONTAINERS, INTERVAL_TIME, hostlist)
+	
+	# Initialize stats
+	stats = Stats(env, workload, datacenter, scheduler)
 
 	# Execute first step
 	newcontainerinfos = workload.generateNewContainers(env.interval) # New containers info
@@ -125,8 +132,7 @@ def initalizeEnvironment(environment, logger):
 	print("Schedule:", env.getActiveContainerList())
 	printDecisionAndMigrations(decision, migrations)
 
-	# Initialize stats
-	stats = Stats(env, workload, datacenter, scheduler)
+	#stats.saveStats(deployed, migrations, [], deployed, decision, schedulingTime)
 	stats.saveStats(deployed, migrations, [], deployed, decision, schedulingTime)
 	return datacenter, workload, scheduler, env, stats
 
@@ -148,6 +154,7 @@ def stepSimulation(workload, scheduler, env, stats):
 	print("Host allocation:", [(c.getHostID() if c else -1)for c in env.containerlist])
 	printDecisionAndMigrations(decision, migrations)
 
+	#stats.saveStats(deployed, migrations, destroyed, selected, decision, schedulingTime)
 	stats.saveStats(deployed, migrations, destroyed, selected, decision, schedulingTime)
 
 def saveStats(stats, datacenter, workload, env, end=True):
@@ -232,4 +239,3 @@ if __name__ == '__main__':
 			os.system('taskkill /f /im influxd.exe')
 
 	saveStats(stats, datacenter, workload, env)
-
