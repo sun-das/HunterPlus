@@ -1,9 +1,6 @@
-<h1 align="center">COSCO Framework</h1>
+<h1 align="center">HunterPlus: AI based energy-efficient task scheduling for cloud–fog computing environments</h1>
 <div align="center">
-  <a href="https://github.com/imperial-qore/COSCO/blob/master/LICENSE">
-    <img src="https://img.shields.io/badge/License-BSD%203--Clause-red.svg" alt="License">
-  </a>
-   <a>
+  <a>
     <img src="https://img.shields.io/badge/python-3.7%20%7C%203.8-blue.svg" alt="Python 3.7, 3.8">
   </a>
    <a>
@@ -53,17 +50,12 @@ Supported workloads: (Simulator) [Bitbrains](http://gwa.ewi.tudelft.nl/datasets/
 
 Our main COSCO work uses the Bitbrains and DeFog workloads. An extended work, MCDS (see `workflow` branch), accepted in IEEE TPDS uses scientific workflows. Check [paper](https://arxiv.org/abs/2112.07269) and [code](https://github.com/imperial-qore/COSCO/tree/workflow).
 
-## Novel Scheduling Algorithms
-We present two novel algorithms in this work: GOBI and GOBI*. GOBI uses a neural network as a surrogate model and gradient based optimization using backpropagation of gradients to input. With advances like cosine annealing and momentum allow us to converge to an optima quickly. Moreover, GOBI* leverages a coupled simulation engine like a digital-twin to further improve the surrogate accuracy and subsequently the scheduling decisions. Experiments conducted using real-world data on fog applications using the GOBI and GOBI* methods, show a significant improvement in terms of energy consumption, response time, Service Level Objective and scheduling time by up to 15, 40, 4, and 82 percent respectively when compared to the state-of-the-art algorithms.
+## Abstract
+Cloud computing is a mainstay of modern technology, offering cost-effective and scalable solutions to a variety of different problems. The massive shift of organization resource needs from local systems to cloud-based systems has greatly increased the costs incurred by cloud providers in expanding, maintaining, and supplying server, storage, network, and processing hardware. Due to the large scale at which cloud providers operate, even small performance degradation issues can cause energy or resource usage costs to rise dramatically. One way in which cloud providers may improve cost reduction is by reducing energy consumption. The use of intelligent task-scheduling algorithms to allocate user-deployed jobs to servers can reduce the amount of energy consumed. Conventional task scheduling algorithms involve both heuristic and metaheuristic methods. Recently, the application of Artificial Intelligence (AI) to optimize task scheduling has seen significant progress, including the Gated Graph Convolution Network (GGCN). This paper proposes a new approach called HunterPlus which examine the effect of extending the GGCN’s Gated Recurrent Unit to a Bidirectional Gated Recurrent Unit. The paper also studies the utilization of Convolutional Neural Networks (CNNs) in optimizing cloud–fog task scheduling. Experimental results show that the CNN scheduler outperforms the GGCN-based models in both energy consumption per task and job completion rate metrics by at least 17 and 10.4 percent, respectively.
 
-## Supplementary video
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/RZOWTj0rfBQ/0.jpg)](https://www.youtube.com/watch?v=RZOWTj0rfBQ)
-
-A detailed course on using the COSCO framework for deep learning based scheduling (deep surrogate optimization and co-simulation) in fog environments is available as a [youtube playlist](https://www.youtube.com/playlist?list=PLN_nzHzuaOBQijEwy2Fy8c09-dWYVe4XO).
- 
 ## Quick Start Guide
-To run the COSCO framework, install required packages using
+To run the this framework, install required packages using
 ```bash
 python3 install.py
 ```
@@ -77,44 +69,22 @@ To run the simulator, use the following command
 python3 main.py
 ```
 
-## Gitpod
-You can directly run tests on the results using a Gitpod Workspace without needing to install anything on your local machine. Click "Open in Gitpod" below and test the code by running `python3 main.py`.
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/imperial-qore/COSCO/)
-
-## Wiki
-Access the [wiki](https://github.com/imperial-qore/COSCO/wiki) for detailed installation instructions, implementing a custom scheduler and replication of results. All execution traces and training data is available at [Zenodo](https://zenodo.org/record/4897944) under CC License.
 
 ## Links
-| Items | Contents | 
 | --- | --- |
-| **Paper** | https://ieeexplore.ieee.org/document/9448450 (with the "Code Reviewed Badge") |
-| **Pre-print** | https://arxiv.org/pdf/2104.14392.pdf |
-| **Documentation** | https://github.com/imperial-qore/COSCO/wiki |
-| **Video** | https://youtu.be/RZOWTj0rfBQ |
-| **Tutorial** | https://www.youtube.com/playlist?list=PLN_nzHzuaOBQijEwy2Fy8c09-dWYVe4XO | 
-| **ICPE Tutorial** | https://youtu.be/osjpaNmkm_w |
-| **Extensions** | QoS aware scheduling ([TPDS'22](https://arxiv.org/abs/2112.07269), [code](https://github.com/imperial-qore/COSCO/tree/workflow)), Energy aware sustainable computing ([JSS'21](https://www.sciencedirect.com/science/article/abs/pii/S0164121221002211), [code](https://github.com/imperial-qore/COSCO/tree/ggcn)), EdgeAI ([SIGMETRICS'21 Poster](https://arxiv.org/abs/2110.04841), [NeurIPS'21 Workshop](https://arxiv.org/abs/2110.02912)) and fault-tolerance ([INFOCOM'22](https://arxiv.org/abs/2112.02292), [code](https://github.com/imperial-qore/PreGAN)) |
-| **Contact**| Shreshth Tuli ([@shreshthtuli](https://github.com/shreshthtuli))  |
-| **Funding**| Imperial President's scholarship, H2020-825040 (RADON) |
+| **Paper** | https://www.sciencedirect.com/science/article/pii/S2542660522001482 |
+| **Contact**| s.iftikhar@qmul.ac.uk |
 
 ## Cite this work
-Our work is published in IEEE TPDS journal. Cite using the following bibtex entry.
+Our work is published in Internet of Things journal. Cite using the following bibtex entry.
 ```bibtex
-@article{tuli2021cosco,
-  author={Tuli, Shreshth and Poojara, Shivananda R. and Srirama, Satish N. and Casale, Giuliano and Jennings, Nicholas R.},
-  journal={IEEE Transactions on Parallel and Distributed Systems}, 
-  title={{COSCO: Container Orchestration Using Co-Simulation and Gradient Based Optimization for Fog Computing Environments}}, 
-  year={2022},
-  volume={33},
-  number={1},
-  pages={101-116},
+@article{iftikhar2023hunterplus,
+  title={HunterPlus: AI based energy-efficient task scheduling for cloud--fog computing environments},
+  author={Iftikhar, Sundas and Ahmad, Mirza Mohammad Mufleh and Tuli, Shreshth and Chowdhury, Deepraj and Xu, Minxian and Gill, Sukhpal Singh and Uhlig, Steve},
+  journal={Internet of Things},
+  volume={21},
+  pages={100667},
+  year={2023},
+  publisher={Elsevier}
 }
 ```
-## License
-
-BSD-3-Clause. 
-Copyright (c) 2021, Shreshth Tuli.
-All rights reserved.
-
-See License file for more details.
