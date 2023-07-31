@@ -1,12 +1,12 @@
 <h1 align="center">HunterPlus: AI based energy-efficient task scheduling for cloud–fog computing environments</h1>
-<div align="center">
+<!-- <div align="center">
  <a>
     <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fimperial-qore%2FCOSCO&count_bg=%23FFC401&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" alt="Hits">
   </a>
    <a href="https://github.com/imperial-qore/COSCO/actions">
     <img src="https://github.com/imperial-qore/SimpleFogSim/workflows/DeFog-Benchmarks/badge.svg" alt="Actions Status">
   </a>
-</div>
+</div> -->
 
 <img src="https://github.com/imperial-qore/COSCO/blob/master/wiki/COSCO.jpg" width="900" align="middle">
 
