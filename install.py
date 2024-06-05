@@ -1,7 +1,8 @@
 from sys import version
 from utils.ColorUtils import *
+from utils.Utils import splitOnPeriods
 
-if float(version[0:3]) < 3.6:
+if float(splitOnPeriods(version)[1]) < 3.6:
 	print(color.FAIL+'Python 3.6 or above required!'+color.ENDC)
 	exit()
 
